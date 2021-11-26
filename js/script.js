@@ -36,7 +36,8 @@ var app = new Vue({
   `,
   /* SOCKET */
   created() {
-    this.socket = io("http://localhost:5500");
+    // this.socket = io("http://localhost:5500");
+    this.socket = io("https://coderator-pranjal.herokuapp.com/");
 
     this.socket.on("connect", () => {
       this.connected = true;
