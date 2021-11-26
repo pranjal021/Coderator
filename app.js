@@ -4,6 +4,9 @@ const app = express();
 const path = require("path");
 const hbs = require("hbs");
 const bcrypt = require("bcryptjs");
+const cookieParser = require("cookie-parser");
+const auth = require("./src/middleware/auth");
+
 require("./src/db/connect");
 
 const server = require("http").createServer(app);
@@ -37,14 +40,13 @@ io.on("connection ", (socket) => {
 });
 
 const Register = require("./src/models/registers");
-
 const static_path = path.join(__dirname, "/");
 const template_path = path.join(__dirname, "/templates/views");
 const partial_path = path.join(__dirname, "/templates/partials");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-
+app.use(cookieParser());
 app.use(express.static(static_path));
 app.set("view engine", "hbs");
 app.set("views", template_path);
@@ -52,6 +54,33 @@ hbs.registerPartials(partial_path);
 
 app.get("/", (req, res) => {
   res.render("home")
+});
+
+app.get("/index", auth, (req, res) => {
+  // Adding `auth` as middleware
+  res.render("index");
+});
+
+app.get("/logout", auth, async (req, res) => {
+  try {
+    // For single logout 
+    req.user.tokens = req.user.tokens.filter((currentElement) => {
+      return currentElement.token !== req.token;
+    });
+
+    // Logout from all devices
+    // req.user.tokens = [];
+
+    res.clearCookie("jwt");
+
+    console.log("Logout successfully");
+
+    await req.user.save();
+    res.render("login");
+
+  } catch (error) {
+    res.status(500).send(error);
+  }
 });
 
 app.get("/register", (req, res) => {
@@ -63,18 +92,6 @@ app.get("/login", (req, res) => {
 });
 
 app.get("/home", (req, res) => {
-  res.render("home");
-});
-
-app.get("/views/login", (req, res) => {
-  res.render("login");
-});
-
-app.get("/views/register", (req, res) => {
-  res.render("register");
-});
-
-app.get("/views/home", (req, res) => {
   res.render("home");
 });
 
@@ -95,7 +112,16 @@ app.post("/register", async (req, res) => {
         confirmpassword: cpassword
       });
 
+      // Middleware
       const token = await registerUser.generateAuthToken();
+
+      // The res.cookie() function is used to set the cookie name to value.
+      // The value parameter may be a string or object converted to JSON.
+      res.cookie("jwt", token, {
+        expires: new Date(Date.now() + 50000), //18000000: expires after 5 hours
+        httpOnly: true,
+        // secure:true
+      });
 
       const registered = await registerUser.save();
       res.status(201).render("index");
@@ -118,6 +144,12 @@ app.post("/login", async (req, res) => {
 
     // Middleware
     const token = await useremail.generateAuthToken();
+
+    res.cookie("jwt", token, {
+      expires: new Date(Date.now() + 600000), //18000000: expires after 5 hours
+      httpOnly: true,
+      // secure:true
+    });
 
     if (isMatch) {
       res.status(201).render("index");

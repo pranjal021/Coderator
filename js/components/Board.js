@@ -14,9 +14,7 @@ export default {
                 <a href="#" class="upload"> <img width="28" title="Upload" src="assets/Upload.svg"> </a>
                 <a href="#" class="sticky"> <img width="28" title="Add sticky notes" src="assets/StickyNote.svg"> </a>
             </div>
-            <div id="canvas">
-                
-            </div>
+            <div id="canvas"></div>
         </div>
     `
 }

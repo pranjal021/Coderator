@@ -7,6 +7,7 @@ export default {
       theme: "material-darker",
     };
   },
+
   template: `
     <div class="page-footer fixed-bottom  text-white" id="status">
       <div class="container-fluid font-small bg-primary">

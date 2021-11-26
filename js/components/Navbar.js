@@ -1,7 +1,7 @@
 export default {
     props: ["mirror", "connected"],
 
-    template: `
+    template:`
     <div class="navbar navbar-dark bg-dark navigation-bar">
         <div class="container-fluid">
             <a target="_blank" class="navbar-brand d-flex align-items-center" href="#">
