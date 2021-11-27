@@ -65,5 +65,5 @@ To run in local machine, open the chrome and type ***“http://localhost:5500/�
 - Click on the “CONNECT” button present on the right hand side.
 All the user credentials would be present under **“userRegistration” -> Registers**
 
-
- 
+# Repo for code - editor
+[click here](https://github.com/pranjal021/code-editor-coderator-)
