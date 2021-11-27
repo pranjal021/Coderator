@@ -12,7 +12,8 @@ require("./src/db/connect");
 const server = require("http").createServer(app);
 const options = {
   cors: {
-    origins: "*",
+    origins:[ "http://localhost:5500/index", "http://localhost:5500/login", "http://localhost:5500/register"],
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   },
 };
 
@@ -28,6 +29,7 @@ let state = {
   ],
   active: 0,
   mode: "text/x-c++src",
+  cursor: { ch: 0, line: 0 }
 };
 
 io.on("connection ", (socket) => {
@@ -118,7 +120,7 @@ app.post("/register", async (req, res) => {
       // The res.cookie() function is used to set the cookie name to value.
       // The value parameter may be a string or object converted to JSON.
       res.cookie("jwt", token, {
-        expires: new Date(Date.now() + 50000), //18000000: expires after 5 hours
+        expires: new Date(Date.now() + 18000000), //18000000: expires after 5 hours
         httpOnly: true,
         // secure:true
       });
@@ -146,7 +148,7 @@ app.post("/login", async (req, res) => {
     const token = await useremail.generateAuthToken();
 
     res.cookie("jwt", token, {
-      expires: new Date(Date.now() + 600000), //18000000: expires after 5 hours
+      expires: new Date(Date.now() + 18000000), //18000000: expires after 5 hours
       httpOnly: true,
       // secure:true
     });

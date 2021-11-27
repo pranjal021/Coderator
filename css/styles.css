@@ -54,9 +54,9 @@ html {
 /*  */
 .board{
   height: calc(100vh - 60px - 22px);
-  flex: 0 0 400px;
+  flex: 0 0 250px;
   overflow: auto;
-  width: 400px;
+  width: 250px;
   background-color: white;
 }
 
@@ -82,7 +82,7 @@ input:focus {
 
 /*  */
 #editor {
-  width: calc(100vw - 260px - 400px);
+  width: calc(100vw - 260px - 250px);
   height: calc(100vh - 60px - 22px);
   overflow: hidden;
 }
@@ -111,7 +111,6 @@ input:focus {
 /*  */
 .nav {
   background-color: #21252b;
-  /* width: calc(100vw - 260px - 500px); */
   overflow-y: hidden;
   overflow-x:auto !important;
   min-height: 35px;

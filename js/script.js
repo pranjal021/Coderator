@@ -37,7 +37,6 @@ var app = new Vue({
   /* SOCKET */
   created() {
     this.socket = io("http://localhost:5500");
-    // this.socket = io("https://coderator-pranjal.herokuapp.com/");
 
     this.socket.on("connect", () => {
       this.connected = true;
@@ -49,6 +48,7 @@ var app = new Vue({
     });
 
     this.socket.on("broadcast", (arg) => {
+      console.log("broadcast");
       if (this.mirror) {
         this.active = arg.active;
         this.mode = arg.mode;
